@@ -50,7 +50,7 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-local Tab = Window:CreateTab("Main V.018", nil)
+local Tab = Window:CreateTab("Main V.019", nil)
 
 
 
@@ -320,6 +320,8 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 		end
 	end)
 
+
+
 	local Dropdown = Tab:CreateDropdown({
 		Name = "Shrines",
 		Options = Shrines,
@@ -327,27 +329,42 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 		MultipleOptions = false,
 		Flag = "Dropdown1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
 		Callback = function(Option)
-			if workspace:FindFirstChild('Shrines'):FindFirstChild(Option) and workspace:FindFirstChild('Shrines'):FindFirstChild(Option):FindFirstChild(Option) then
-				TweenService:Create(Character.PrimaryPart, TweenInfo.new( (Character.PrimaryPart.Position - workspace:WaitForChild('Shrines'):FindFirstChild(Option.Name).PrimaryPart.Position).Magnitude / 29), {CFrame = workspace:WaitForChild('Shrines'):FindFirstChild(Option.Name).PrimaryPart.CFrame}):Play()
-			else
-				Rayfield:Notify({ --noti
-					Title = "Error",
-					Content = Option.CurrentValue .. 'Has not been rendered',
-					Duration = 3.5,
-					Image = nil,
-					Actions = { -- Notification Buttons
-						Ignore = {
-							Name = "Close",
-							Callback = function()
-							end
-						},
-					},
-				})
-			end
+
+			Doit()
 			-- The function that takes place when the selected option is changed
 			-- The variable (Option) is a table of strings for the current selected options
 		end,
 	})
+
+	Doit = function()
+		local LastOption = Dropdown.CurrentOption[1]
+		if  workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]) then
+			Noclip(Character)
+			TweenService:Create(Character.PrimaryPart, TweenInfo.new( (Character.PrimaryPart.Position - workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.Position).Magnitude / 29), {CFrame = workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.CFrame}):Play()
+			repeat task.wait()
+				if Character:FindFirstChild('Torso') then
+					if Character.Torso.CanCollide == true then Noclip(Character) end
+					Part.CFrame = Character.PrimaryPart.CFrame * CFrame.new(0,-2.5,0)
+				end
+			until (Character.PrimaryPart.Position - workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.Position).Magnitude <= 4 or _G.FarmingMobs == true or Dropdown.CurrentOption[1] ~= LastOption
+		else
+			Rayfield:Notify({ --noti
+				Title = "Error",
+				Content = Dropdown.CurrentOption[1] .. ' Has not been rendered',
+				Duration = 3.5,
+				Image = nil,
+				Actions = { -- Notification Buttons
+					Ignore = {
+						Name = "Close",
+						Callback = function()
+						end
+					},
+				},
+			}) -- noti end
+		end
+
+	end
+
 end -- End of VoxlBlade
 
 
