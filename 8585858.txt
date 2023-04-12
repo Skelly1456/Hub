@@ -50,7 +50,7 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-local Tab = Window:CreateTab("Main V.012", nil)
+local Tab = Window:CreateTab("Main V.013", nil)
 
 
 
@@ -108,7 +108,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 						end
 					end
 
-					if Mob and not Mob:FindFirstChild('LinkedModel') then
+					if Mob and not Mob:FindFirstChild('HumanoidRootPart') then
 						for i,v in pairs(NPCS:GetChildren()) do
 							if v:FindFirstChild('LinkedModel') then
 								Mob = v
@@ -118,7 +118,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 						task.wait(0.12)
 					end
 
-					if Mob then
+					if Mob and Mob:FindFirstChild('LinkedModel') then
 						Mob = Mob:FindFirstChild('LinkedModel')
 					end
 					if Mob and Mob.PrimaryPart and Character.PrimaryPart then
