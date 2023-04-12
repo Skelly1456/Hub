@@ -61,9 +61,168 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-local Tab = Window:CreateTab("Main V.018", nil)
+local Tab = Window:CreateTab("Main V 1.1", nil)
+
+if game.PlaceId == 11360595370 then
+    
+    	--// Bool Values
+	_G.FarmingMobs = false
+	--\\ End of Bool Values
+
+	local Part = nil
+	if not workspace:FindFirstChild('PlatFormPart') then
+		Part = Instance.new('Part')
+		Part.Anchored = true
+		Part.Parent = workspace
+		Part.Name = 'PlatFormPart'
+	else
+		Part = workspace:FindFirstChild('PlatFormPart')
+	end
+	local NPCS = workspace:WaitForChild('Livings')
+	local Character = Player.Character or Player.CharacterAdded:Wait()
+    local WhitelistedMobs = {'Illumination','Needles'}
+	AutoFarmMobs = function(bool)
+		local Mob = nil
+
+		if bool == true then
+			repeat game:GetService('RunService').RenderStepped:Wait()
+
+				repeat game:GetService('RunService').RenderStepped:Wait() until Player.Character
+				Character = Player.Character
+
+local args = {
+    [1] = "TakeQuest",
+    [2] = workspace.Quests:FindFirstChild("Quest Giver")
+}
+
+game:GetService("ReplicatedStorage").Events.Quest:InvokeServer(unpack(args))
 
 
+				--// Toggle noclip
+				if Character and Character:FindFirstChild('Head') then Noclip(Character) end
+				--\\
+
+			--	Part.CFrame = Character.PrimaryPart.CFrame * CFrame.new(0,-2.5,0)
+				--Part.Size = Vector3.new(10,1,10)
+
+				if _G.FarmingMobs == true then
+
+                    local Chance = math.random(1,#WhitelistedMobs)
+                    
+					if not Mob or Mob and Mob:FindFirstChild('Humanoid') and Mob.Humanoid.Health < 2 then
+						for i,v in pairs(NPCS:GetChildren()) do
+							if v:FindFirstChild('HumanoidRootPart') and v:FindFirstChild('Humanoid') and string.find(v.Name,WhitelistedMobs[Chance]) and  v.Humanoid.Health > 0 then
+								Mob = v
+								break
+							end
+						end
+					end
+
+					if Mob and not Mob:FindFirstChild('HumanoidRootPart') then
+						for i,v in pairs(NPCS:GetChildren()) do
+							if v:FindFirstChild('HumanoidRootPart') and v:FindFirstChild('Humanoid') and  string.find(v.Name,WhitelistedMobs[Chance]) and v.Humanoid.Health > 0 then
+								Mob = v
+								break
+							end
+						end
+						task.wait(0.12)
+					end
+
+					if Mob and Mob.PrimaryPart and Character.PrimaryPart and Mob:FindFirstChild('HumanoidRootPart') then
+						local goal = {}
+
+						goal.CFrame = Mob:WaitForChild('HumanoidRootPart').CFrame * CFrame.new(0,0,7)
+						TweenSpeed = (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude / 4.5
+
+						if (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 10 then
+
+							local args = {
+    [1] = "MouseButton1",
+    [2] = true
+}
+
+game:GetService("ReplicatedStorage").Events.RequestEvent:FireServer(unpack(args))
+
+						end
+
+						TweenService:Create(Character.PrimaryPart, TweenInfo.new(TweenSpeed), goal):Play()
+					end
+				end
+
+			until _G.FarmingMobs == false
+		else -- Stop Autofarm
+			_G.FarmingMobs = false
+			TweenService:Create(Character.PrimaryPart, TweenInfo.new(0), {CFrame = Character.PrimaryPart.CFrame}):Play()
+		end
+
+	end
+
+    Rayfield:Notify({ --noti
+		Title = "Loaded",
+		Content = "Unordinary" .. Emojis[math.random(1,#Emojis)],
+		Duration = 3.5,
+		Image = nil,
+		Actions = { -- Notification Buttons
+			Ignore = {
+				Name = "Close",
+				Callback = function()
+				end
+			},
+		},
+	}) -- noti end
+
+
+	local Section = Tab:CreateSection("Main Features")
+
+	local Button = Tab:CreateButton({
+		Name = "Autofarm Mobs",
+		Callback = function()
+			if _G.FarmingMobs == false then
+				_G.FarmingMobs = true
+
+				Rayfield:Notify({ --noti
+					Title = "Autofarm",
+					Content = "Started Autofarm " .. Emojis[math.random(1,#Emojis)],
+					Duration = 3.5,
+					Image = nil,
+					Actions = { -- Notification Buttons
+						Ignore = {
+							Name = "Close",
+							Callback = function()
+							end
+						},
+					},
+				}) -- noti end
+
+				AutoFarmMobs(true)
+
+
+			else
+
+				_G.FarmingMobs = false
+				AutoFarmMobs(false)
+
+				Rayfield:Notify({ --noti
+					Title = "Autofarm",
+					Content = "Stopped Autofarm ".. Emojis[math.random(1,#Emojis)],
+					Duration = 3.5,
+					Image = nil,
+					Actions = { -- Notification Buttons
+						Ignore = {
+							Name = "Close",
+							Callback = function()
+							end
+						},
+					},
+				}) -- noti end
+
+			end
+
+		end,
+	})
+    
+    
+    end
 
 if game.PlaceId == 8651781069 or game.PlaceId == 9351498692 then -- VoxlBlade
 
