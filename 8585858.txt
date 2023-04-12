@@ -1,5 +1,7 @@
 getgenv().SecureMode = true
---
+
+local Emojis = {'😱','😔','😱😱','🧐🧐','😨','😡😡','🤨🤨🤨'}
+
 repeat task.wait() until game.Loaded
 
 --// Universal tables
@@ -50,7 +52,7 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-local Tab = Window:CreateTab("Main V.019", nil)
+local Tab = Window:CreateTab("Main V.018", nil)
 
 
 
@@ -159,7 +161,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 	Rayfield:Notify({ --noti
 		Title = "Loaded",
-		Content = "Voxl blade",
+		Content = "Voxl blade " .. math.random(0,#Emojis),
 		Duration = 3.5,
 		Image = nil,
 		Actions = { -- Notification Buttons
@@ -182,7 +184,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "Autofarm",
-					Content = "Started Autofarm 🤓",
+					Content = "Started Autofarm " .. math.random(0,#Emojis),
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -230,7 +232,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "AutoFarm",
-					Content = "Auto Q Ability Enabled 🤓",
+					Content = "Auto Q Ability Enabled " .. math.random(0,#Emojis),
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -247,7 +249,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "AutoFarm",
-					Content = "Auto Q Ability Disabled 🤓",
+					Content = "Auto Q Ability Disabled " .. math.random(0,#Emojis),
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -272,7 +274,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "AutoFarm",
-					Content = "Auto R Ability Enabled 🤓",
+					Content = "Auto R Ability Enabled " .. math.random(0,#Emojis),
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -289,7 +291,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "AutoFarm",
-					Content = "Auto R Ability Disabled 🤓",
+					Content = "Auto R Ability Disabled " .. math.random(0,#Emojis),
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
