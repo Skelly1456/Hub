@@ -1,5 +1,6 @@
 getgenv().SecureMode = true
 
+
 local Emojis = {'😱','😔','😱😱','🧐🧐','😨','😡😡','🤨🤨🤨'}
 
 repeat task.wait() until game.Loaded
@@ -337,34 +338,37 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 			-- The variable (Option) is a table of strings for the current selected options
 		end,
 	})
+	local Fix = true
 
 	Doit = function()
 		local LastOption = Dropdown.CurrentOption[1]
-		if  workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]) then
-			Noclip(Character)
-			TweenService:Create(Character.PrimaryPart, TweenInfo.new( (Character.PrimaryPart.Position - workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.Position).Magnitude / 29), {CFrame = workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.CFrame}):Play()
-			repeat task.wait()
-				if Character:FindFirstChild('Torso') then
-					if Character.Torso.CanCollide == true then Noclip(Character) end
-					Part.CFrame = Character.PrimaryPart.CFrame * CFrame.new(0,-2.5,0)
-				end
-			until (Character.PrimaryPart.Position - workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.Position).Magnitude <= 4 or _G.FarmingMobs == true or Dropdown.CurrentOption[1] ~= LastOption
-		else
-			Rayfield:Notify({ --noti
-				Title = "Error",
-				Content = Dropdown.CurrentOption[1] .. ' Has not been rendered ' .. Emojis[math.random(0,#Emojis)],
-				Duration = 3.5,
-				Image = nil,
-				Actions = { -- Notification Buttons
-					Ignore = {
-						Name = "Close",
-						Callback = function()
-						end
+		if Fix == true then task.delay(1,function() Fix = false end) return end
+		if Fix == false then
+			if  workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]) then
+				Noclip(Character)
+				TweenService:Create(Character.PrimaryPart, TweenInfo.new( (Character.PrimaryPart.Position - workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.Position).Magnitude / 29), {CFrame = workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.CFrame}):Play()
+				repeat task.wait()
+					if Character:FindFirstChild('Torso') then
+						if Character.Torso.CanCollide == true then Noclip(Character) end
+						Part.CFrame = Character.PrimaryPart.CFrame * CFrame.new(0,-2.5,0)
+					end
+				until (Character.PrimaryPart.Position - workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.Position).Magnitude <= 4 or _G.FarmingMobs == true or Dropdown.CurrentOption[1] ~= LastOption
+			else
+				Rayfield:Notify({ --noti
+					Title = "Error",
+					Content = Dropdown.CurrentOption[1] .. ' Has not been rendered ' .. Emojis[math.random(0,#Emojis)],
+					Duration = 3.5,
+					Image = nil,
+					Actions = { -- Notification Buttons
+						Ignore = {
+							Name = "Close",
+							Callback = function()
+							end
+						},
 					},
-				},
-			}) -- noti end
+				}) -- noti end
+			end
 		end
-
 	end
 
 end -- End of VoxlBlade
