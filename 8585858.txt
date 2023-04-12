@@ -61,12 +61,13 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-local Tab = Window:CreateTab("Main V 1.25", nil)
+local Tab = Window:CreateTab("Main V 1.3", nil)
 
-if game.PlaceId == 11360595370 then
-    
-    	--// Bool Values
+if game.PlaceId == 11360595370 then -- Unordinary
+
+	--// Bool Values
 	_G.FarmingMobs = false
+	_G.CanFarm = true
 	--\\ End of Bool Values
 
 	local Part = nil
@@ -80,36 +81,58 @@ if game.PlaceId == 11360595370 then
 	end
 	local NPCS = workspace:WaitForChild('Livings')
 	local Character = Player.Character or Player.CharacterAdded:Wait()
-    local WhitelistedMobs = {'Illumination','Needles'}
+	local WhitelistedMobs = {'Illumination','Needles'}
 	AutoFarmMobs = function(bool)
 		local Mob = nil
 
 		if bool == true then
 			repeat game:GetService('RunService').RenderStepped:Wait()
-                task.wait(0.05)
+				--	task.wait(0.05)
 				repeat game:GetService('RunService').RenderStepped:Wait() until Player.Character
 				Character = Player.Character
 
-local args = {
-    [1] = "TakeQuest",
-    [2] = workspace.Quests:FindFirstChild("Quest Giver")
-}
+				if Character:FindFirstChild('HumanoidRootPart') and not Character.HumanoidRootPart:FindFirstChildOfClass('BodyVelocity') then Instance.new('BodyVelocity',Character.HumanoidRootPart) end
 
-game:GetService("ReplicatedStorage").Events.Quest:InvokeServer(unpack(args))
+				if not Player.PlayerGui.Quest.Container.Visible then
+
+					_G.CanFarm = false
+
+					for i,v in pairs(workspace.Quests:GetChildren()) do --// auto quest
+						if v.Name == 'Quest Giver' and v:FindFirstChild('BlackLongMaleHair') then
+							print'FOUND'
+							local goal = {}
+
+							goal.CFrame = v:WaitForChild('HumanoidRootPart').CFrame
+							TweenSpeed = (Character.PrimaryPart.Position - v.PrimaryPart.Position).Magnitude / 7.5
+
+							if (Character.PrimaryPart.Position - v.PrimaryPart.Position).Magnitude <= 7 then
+								local args = {
+									[1] = "TakeQuest",
+									[2] = workspace.Quests:FindFirstChild("Quest Giver")
+								}
+
+								game:GetService("ReplicatedStorage").Events.Quest:InvokeServer(unpack(args))
+								_G.CanFarm = true
+							end
+
+							TweenService:Create(Character.PrimaryPart, TweenInfo.new(TweenSpeed), goal):Play()
+						end
+					end --\\
 
 
+				end
 				--// Toggle noclip
 				if Character and Character:FindFirstChild('Head') then Noclip(Character) end
 				--\\
 
-			--	Part.CFrame = Character.PrimaryPart.CFrame * CFrame.new(0,-2.5,0)
+				--	Part.CFrame = Character.PrimaryPart.CFrame * CFrame.new(0,-2.5,0)
 				--Part.Size = Vector3.new(10,1,10)
 
-				if _G.FarmingMobs == true then
+				if _G.FarmingMobs == true and _G.CanFarm == true then
 
-                    local Chance = math.random(1,#WhitelistedMobs)
-                    
-					if not Mob or Mob and Mob:FindFirstChild('Humanoid') and Mob.Humanoid.Health < 2 then
+					local Chance = math.random(1,#WhitelistedMobs)
+
+					if not Mob or Mob and Mob:FindFirstChild('Humanoid') and Mob.Humanoid.Health <= 0.3 then
 						for i,v in pairs(NPCS:GetChildren()) do
 							if v:FindFirstChild('HumanoidRootPart') and v:FindFirstChild('Humanoid') and string.find(v.Name,WhitelistedMobs[Chance]) and  v.Humanoid.Health > 0 then
 								Mob = v
@@ -131,17 +154,17 @@ game:GetService("ReplicatedStorage").Events.Quest:InvokeServer(unpack(args))
 					if Mob and Mob.PrimaryPart and Character.PrimaryPart and Mob:FindFirstChild('HumanoidRootPart') then
 						local goal = {}
 
-						goal.CFrame = Mob:WaitForChild('HumanoidRootPart').CFrame * CFrame.new(0,0,7)
+						goal.CFrame = Mob:WaitForChild('HumanoidRootPart').CFrame * CFrame.new(0,0,5)
 						TweenSpeed = (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude / 7
 
 						if (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 10 then
 
 							local args = {
-    [1] = "MouseButton1",
-    [2] = true
-}
+								[1] = "MouseButton1",
+								[2] = true
+							}
 
-game:GetService("ReplicatedStorage").Events.RequestEvent:FireServer(unpack(args))
+							game:GetService("ReplicatedStorage").Events.RequestEvent:FireServer(unpack(args))
 
 						end
 
@@ -157,7 +180,7 @@ game:GetService("ReplicatedStorage").Events.RequestEvent:FireServer(unpack(args)
 
 	end
 
-    Rayfield:Notify({ --noti
+	Rayfield:Notify({ --noti
 		Title = "Loaded",
 		Content = "Unordinary" .. Emojis[math.random(1,#Emojis)],
 		Duration = 3.5,
@@ -220,9 +243,9 @@ game:GetService("ReplicatedStorage").Events.RequestEvent:FireServer(unpack(args)
 
 		end,
 	})
-    
-    
-    end
+
+
+end
 
 if game.PlaceId == 8651781069 or game.PlaceId == 9351498692 then -- VoxlBlade
 
@@ -476,126 +499,125 @@ if game.PlaceId == 8651781069 or game.PlaceId == 9351498692 then -- VoxlBlade
 		end,
 	})
 
-        if game.PlaceId ~= 9351498692 then
-	local Shrines = {}
+	if game.PlaceId ~= 9351498692 then
+		local Shrines = {}
 
-	for i,v in pairs(workspace:WaitForChild('Shrines'):GetChildren()) do
-		table.insert(Shrines,v.Name)
-	end
-
-	workspace:WaitForChild('Shrines').ChildAdded:Connect(function()
 		for i,v in pairs(workspace:WaitForChild('Shrines'):GetChildren()) do
-			if not table.find(Shrines,v.Name) then
-				table.insert(Shrines,v.Name)
-			end
+			table.insert(Shrines,v.Name)
 		end
-	end)
+
+		workspace:WaitForChild('Shrines').ChildAdded:Connect(function()
+			for i,v in pairs(workspace:WaitForChild('Shrines'):GetChildren()) do
+				if not table.find(Shrines,v.Name) then
+					table.insert(Shrines,v.Name)
+				end
+			end
+		end)
 
 
-        if game.PlaceId ~= 9351498692 then
-	local Dropdown = Tab:CreateDropdown({
-		Name = "Shrines",
-		Options = Shrines,
-		CurrentOption = {"None"},
-		MultipleOptions = false,
-		Flag = "Dropdown1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-		Callback = function(Option)
+		if game.PlaceId ~= 9351498692 then
+			local Dropdown = Tab:CreateDropdown({
+				Name = "Shrines",
+				Options = Shrines,
+				CurrentOption = {"None"},
+				MultipleOptions = false,
+				Flag = "Dropdown1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+				Callback = function(Option)
 
-			Doit()
-			-- The function that takes place when the selected option is changed
-			-- The variable (Option) is a table of strings for the current selected options
-		end,
-	})
-	local Fix = true
+					Doit()
+					-- The function that takes place when the selected option is changed
+					-- The variable (Option) is a table of strings for the current selected options
+				end,
+			})
+			local Fix = true
 
-	Doit = function()
-		local LastOption = Dropdown.CurrentOption[1]
-		if Fix == true then task.delay(1,function() Fix = false end) return end
-		if Fix == false then
-			if  workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]) then
-				Noclip(Character)
-				TweenService:Create(Character.PrimaryPart, TweenInfo.new( (Character.PrimaryPart.Position - workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.Position).Magnitude / 29), {CFrame = workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.CFrame}):Play()
-				repeat task.wait()
-					if Character:FindFirstChild('Torso') then
-						if Character.Torso.CanCollide == true then Noclip(Character) end
-						Part.CFrame = Character.PrimaryPart.CFrame * CFrame.new(0,-2.5,0)
-					end
-				until (Character.PrimaryPart.Position - workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.Position).Magnitude <= 4 or _G.FarmingMobs == true or Dropdown.CurrentOption[1] ~= LastOption
-			else
-				Rayfield:Notify({ --noti
-					Title = "Error",
-					Content = Dropdown.CurrentOption[1] .. ' Has not been rendered ' .. Emojis[math.random(0,#Emojis)],
-					Duration = 3.5,
-					Image = nil,
-					Actions = { -- Notification Buttons
-						Ignore = {
-							Name = "Close",
-							Callback = function()
+			Doit = function()
+				local LastOption = Dropdown.CurrentOption[1]
+				if Fix == true then task.delay(1,function() Fix = false end) return end
+				if Fix == false then
+					if  workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]) then
+						Noclip(Character)
+						TweenService:Create(Character.PrimaryPart, TweenInfo.new( (Character.PrimaryPart.Position - workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.Position).Magnitude / 29), {CFrame = workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.CFrame}):Play()
+						repeat task.wait()
+							if Character:FindFirstChild('Torso') then
+								if Character.Torso.CanCollide == true then Noclip(Character) end
+								Part.CFrame = Character.PrimaryPart.CFrame * CFrame.new(0,-2.5,0)
 							end
-						},
-					},
-				}) -- noti end
+						until (Character.PrimaryPart.Position - workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.Position).Magnitude <= 4 or _G.FarmingMobs == true or Dropdown.CurrentOption[1] ~= LastOption
+					else
+						Rayfield:Notify({ --noti
+							Title = "Error",
+							Content = Dropdown.CurrentOption[1] .. ' Has not been rendered ' .. Emojis[math.random(0,#Emojis)],
+							Duration = 3.5,
+							Image = nil,
+							Actions = { -- Notification Buttons
+								Ignore = {
+									Name = "Close",
+									Callback = function()
+									end
+								},
+							},
+						}) -- noti end
+					end
+				end
 			end
 		end
 	end
-end
-end
 
 end -- End of VoxlBlade
 
 if not workspace:FindFirstChild('TruthSeeking') and game.PlaceId ~= 9351498692 then
-task.spawn(function()
-    local new = Instance.new('Folder',workspace)
-    new.Name = 'TruthSeeking'
-	local ROTATION_DURATION = 0.6 -- the duration of the rotation in seconds
-	local TweenService = game:GetService('TweenService')
-	local Character = game:GetService('Players').LocalPlayer.Character or game:GetService('Players').LocalPlayer.CharacterAdded:Wait()
-	Character:WaitForChild('HumanoidRootPart')
+	task.spawn(function()
+		local new = Instance.new('Folder',workspace)
+		new.Name = 'TruthSeeking'
+		local ROTATION_DURATION = 0.6 -- the duration of the rotation in seconds
+		local TweenService = game:GetService('TweenService')
+		local Character = game:GetService('Players').LocalPlayer.Character or game:GetService('Players').LocalPlayer.CharacterAdded:Wait()
+		Character:WaitForChild('HumanoidRootPart')
 
-	local Parts = {}
+		local Parts = {}
 
-	for i = 1,10 do
-		local part = Instance.new('Part',workspace)
-		part.Anchored = true
-		part.CanCollide = false
-		table.insert(Parts,part)
-		part.Shape = Enum.PartType.Ball
-		part.Color = Color3.new(0, 0, 0)
-		local h = Instance.new('Highlight',part)
-		h.OutlineColor = Color3.fromRGB(170, 0, 255)
-		h.FillColor = Color3.fromRGB(0,0,0)
-		h.FillTransparency = 0
-		part.Size = Vector3.new(1,1,1)
-	end
-
-
-	-- Create a CFrame array to define the different positions/angles of the rotation
-
-	local positions = {
-		CFrame.new(math.random(-5,15),math.random(-5,10),math.random(-5,15)),
-		CFrame.new(math.random(-5,15),math.random(-5,10),math.random(-5,15))
-
-	}
-
-	-- Define a function to perform the rotation using TweenService
-
-	local function rotatePart(part, position, angle, duration)
-
-		TweenService:Create(part, TweenInfo.new(duration), {
-			CFrame = Character.HumanoidRootPart.CFrame * position * CFrame.Angles(math.rad(angle), 0, 0)
-		}):Play()
+		for i = 1,10 do
+			local part = Instance.new('Part',workspace)
+			part.Anchored = true
+			part.CanCollide = false
+			table.insert(Parts,part)
+			part.Shape = Enum.PartType.Ball
+			part.Color = Color3.new(0, 0, 0)
+			local h = Instance.new('Highlight',part)
+			h.OutlineColor = Color3.fromRGB(170, 0, 255)
+			h.FillColor = Color3.fromRGB(0,0,0)
+			h.FillTransparency = 0
+			part.Size = Vector3.new(1,1,1)
+		end
 
 
-	end
-	repeat task.wait(0.002)
-		repeat task.wait() until game:GetService('Players').LocalPlayer.Character
+		
 
-		Character = game:GetService('Players').LocalPlayer.Character
-		repeat task.wait() until Character and Character:FindFirstChild('HumanoidRootPart')
-		rotatePart(Parts[math.random(1,#Parts)],CFrame.new(math.random(-5,10),math.random(-5,5),math.random(-5,10)),math.random(-360,360),ROTATION_DURATION)
-	until nil
+		local positions = {
+			CFrame.new(math.random(-5,15),math.random(-5,10),math.random(-5,15)),
+			CFrame.new(math.random(-5,15),math.random(-5,10),math.random(-5,15))
 
-end)
+		}
+
+		
+		local function rotatePart(part, position, angle, duration)
+
+			TweenService:Create(part, TweenInfo.new(duration), {
+				CFrame = Character.HumanoidRootPart.CFrame * position * CFrame.Angles(math.rad(angle), 0, 0)
+			}):Play()
+
+
+		end
+		repeat task.wait(0.002)
+			repeat task.wait() until game:GetService('Players').LocalPlayer.Character
+
+			Character = game:GetService('Players').LocalPlayer.Character
+			repeat task.wait() until Character and Character:FindFirstChild('HumanoidRootPart')
+			rotatePart(Parts[math.random(1,#Parts)],CFrame.new(math.random(-5,10),math.random(-5,5),math.random(-5,10)),math.random(-360,360),ROTATION_DURATION)
+		until nil
+
+	end)
 end
 
 Rayfield:LoadConfiguration()
