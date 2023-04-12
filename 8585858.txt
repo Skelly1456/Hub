@@ -50,7 +50,7 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-local Tab = Window:CreateTab("Main V.014", nil)
+local Tab = Window:CreateTab("Main V.015", nil)
 
 
 
@@ -305,6 +305,49 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 		end,
 	})
+
+	local Dropdown = Tab:CreateDropdown({
+		Name = "Shrines",
+		Options = {""},
+		CurrentOption = {"None"},
+		MultipleOptions = false,
+		Flag = "Dropdown1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+		Callback = function(Option)
+			if workspace:FindFirstChild('Shrines'):FindFirstChild(Option) and workspace:FindFirstChild('Shrines'):FindFirstChild(Option):FindFirstChild(Option) then
+				TweenService:Create(Character.PrimaryPart, TweenInfo.new( (Character.PrimaryPart.Position - workspace:WaitForChild('Shrines'):FindFirstChild(Option.Name).PrimaryPart.Position).Magnitude / 29), {CFrame = workspace:WaitForChild('Shrines'):FindFirstChild(Option.Name).PrimaryPart.CFrame}):Play()
+			else
+				Rayfield:Notify({ --noti
+					Title = "Error",
+					Content = Option .. 'Has not been rendered',
+					Duration = 3.5,
+					Image = nil,
+					Actions = { -- Notification Buttons
+						Ignore = {
+							Name = "Close",
+							Callback = function()
+							end
+						},
+					},
+				})
+			end
+			-- The function that takes place when the selected option is changed
+			-- The variable (Option) is a table of strings for the current selected options
+		end,
+	})
+	local Shrines = {}
+
+	for i,v in pairs(workspace:WaitForChild('Shrines'):GetChildren()) do
+		table.insert(Shrines,v.Name)
+	end
+
+	workspace:WaitForChild('Shrines').ChildAdded:Connect(function()
+		for i,v in pairs(workspace:WaitForChild('Shrines'):GetChildren()) do
+			if not table.find(Shrines,v.Name) then
+				table.insert(Shrines,v.Name)
+			end
+		end
+		Dropdown:Set(Shrines)
+	end)
 
 
 
