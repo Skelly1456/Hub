@@ -333,7 +333,7 @@ if game.PlaceId == 8651781069 or game.PlaceId == 9351498692 then -- VoxlBlade
 	end)
 
 
-
+        if game.PlaceId ~= 9351498692 then
 	local Dropdown = Tab:CreateDropdown({
 		Name = "Shrines",
 		Options = Shrines,
@@ -379,6 +379,7 @@ if game.PlaceId == 8651781069 or game.PlaceId == 9351498692 then -- VoxlBlade
 			end
 		end
 	end
+end
 end
 
 end -- End of VoxlBlade
