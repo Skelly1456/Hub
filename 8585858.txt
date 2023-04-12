@@ -50,7 +50,7 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-local Tab = Window:CreateTab("Main V.015", nil)
+local Tab = Window:CreateTab("Main V.016", nil)
 
 
 
@@ -318,7 +318,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 			else
 				Rayfield:Notify({ --noti
 					Title = "Error",
-					Content = Option .. 'Has not been rendered',
+					Content = 'Shrine ' .. 'Has not been rendered',
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -349,6 +349,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 		Dropdown:Set(Shrines)
 	end)
 
+	Dropdown:Set(Shrines)
 
 
 
