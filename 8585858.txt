@@ -1,0 +1,300 @@
+getgenv().SecureMode = true
+--
+repeat task.wait() until game.Loaded
+
+--// Universal tables
+local Noclippedparts = {}
+--\\
+
+--// Universal functions
+local Noclip = function(character)
+	--print('noclipped')
+	for i,v in pairs(character:GetDescendants()) do
+		--	if not table.find(Noclippedparts,v) then
+		if v:IsA('Part') and v.Name ~= 'HumanoidRootPart' then --[[table.insert(Noclippedparts,v)]] v.CanCollide = false
+			--end
+		end
+	end
+end
+--\\
+
+local Players = game:GetService('Players')
+local Player = Players.LocalPlayer
+local TweenService = game:GetService("TweenService")
+
+local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shlexware/Rayfield/main/source'))()
+
+local Window = Rayfield:CreateWindow({
+	Name = "Main",
+	LoadingTitle = "noglatheman",
+	LoadingSubtitle = "by poweringpoweringlol",
+	ConfigurationSaving = {
+		Enabled = true,
+		FolderName = nil, -- Create a custom folder for your hub/game
+		FileName = "not noglatheman"
+	},
+	Discord = {
+		Enabled = false,
+		Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD.
+		RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+	},
+	KeySystem = true, -- Set this to true to use our key system
+	KeySettings = {
+		Title = "noglatheman",
+		Subtitle = "Key System",
+		Note = "cryope",
+		FileName = "noglatheman key",
+		SaveKey = false,
+		GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+		Key = "noglatheman"
+	}
+})
+
+local Tab = Window:CreateTab("Main", nil)
+
+
+
+if game.PlaceId == 8651781069 then -- VoxlBlade
+
+	--// Bool Values
+	_G.FarmingMobs = false
+	_G.UseQability = false
+	_G.UseRability = false
+	--\\ End of Bool Values
+
+	local Part = nil
+	if not workspace:FindFirstChild('PlatFormPart') then
+		Part = Instance.new('Part')
+		Part.Anchored = true
+		Part.Parent = workspace
+		Part.Name = 'PlatFormPart'
+	else
+		Part = workspace:FindFirstChild('PlatFormPart')
+	end
+	local NPCS = workspace:WaitForChild('NPCS')
+	local Character = Player.Character or Player.CharacterAdded:Wait()
+
+	AutoFarmMobs = function(bool)
+		if bool == true then
+			repeat game:GetService('RunService').RenderStepped:Wait()
+
+				repeat game:GetService('RunService').RenderStepped:Wait() until Player.Character
+				Character = Player.Character
+
+				--// Equip weapon
+				if not Character:FindFirstChild('Sword') then
+					game:GetService("ReplicatedStorage").Events.EquipWeapon:InvokeServer()
+				end
+				--\\
+
+				--// Toggle noclip
+				if Character.Torso.CanCollide == true then Noclip(Character) end
+				--\\
+
+				Part.CFrame = Character.PrimaryPart.CFrame * CFrame.new(0,-2.5,0)
+				Part.Size = Vector3.new(10,1,10)
+
+				if _G.FarmingMobs == true then
+					local Mob = nil
+
+					if not Mob then
+						for i,v in pairs(NPCS:GetChildren()) do
+							if v:FindFirstChild('LinkedModel') then
+								Mob = v
+								break
+							end
+						end
+					end
+
+					Mob = Mob:FindFirstChild('LinkedModel')
+
+					if Mob and Mob.PrimaryPart and Character.PrimaryPart then
+						local goal = {}
+
+						goal.CFrame = Mob.PrimaryPart.CFrame * CFrame.new(0,0,6)
+						TweenSpeed = (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude / 28
+
+						if (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 8 then
+
+							if _G.UseQability then
+								game:GetService("ReplicatedStorage").Events.WeaponArt:FireServer()
+							end
+							if _G.UseRability then
+								game:GetService("ReplicatedStorage").Events.Rune:FireServer()
+							end
+
+							game:GetService("ReplicatedStorage").Events.SwingSword:FireServer("L")
+						end
+
+						TweenService:Create(Character.PrimaryPart, TweenInfo.new(TweenSpeed), goal):Play()
+					end
+				end
+
+			until _G.FarmingMobs == false
+		else -- Stop Autofarm
+			_G.FarmingMobs = false
+			TweenService:Create(Character.PrimaryPart, TweenInfo.new(0), {CFrame = Character.PrimaryPart.CFrame}):Play()
+		end
+
+	end
+
+
+
+
+
+	Rayfield:Notify({ --noti
+		Title = "Loaded",
+		Content = "Voxl blade",
+		Duration = 3.5,
+		Image = nil,
+		Actions = { -- Notification Buttons
+			Ignore = {
+				Name = "Close",
+				Callback = function()
+				end
+			},
+		},
+	}) -- noti end
+
+
+	local Section = Tab:CreateSection("Main Features")
+
+	local Button = Tab:CreateButton({
+		Name = "Autofarm Mobs",
+		Callback = function()
+			if _G.FarmingMobs == false then
+				_G.FarmingMobs = true
+
+				Rayfield:Notify({ --noti
+					Title = "Autofarm",
+					Content = "Started Autofarm 🤓",
+					Duration = 3.5,
+					Image = nil,
+					Actions = { -- Notification Buttons
+						Ignore = {
+							Name = "Close",
+							Callback = function()
+							end
+						},
+					},
+				}) -- noti end
+
+				AutoFarmMobs(true)
+
+
+			else
+
+				_G.FarmingMobs = false
+				AutoFarmMobs(false)
+
+				Rayfield:Notify({ --noti
+					Title = "Autofarm",
+					Content = "Stopped Autofarm 🤓",
+					Duration = 3.5,
+					Image = nil,
+					Actions = { -- Notification Buttons
+						Ignore = {
+							Name = "Close",
+							Callback = function()
+							end
+						},
+					},
+				}) -- noti end
+
+			end
+
+		end,
+	})
+
+
+	local Button2 = Tab:CreateButton({
+		Name = "Auto use Q Ability",
+		Callback = function()
+			if _G.UseQability == false then
+				_G.UseQability = true
+
+				Rayfield:Notify({ --noti
+					Title = "AutoFarm",
+					Content = "Auto Q Ability Enabled 🤓",
+					Duration = 3.5,
+					Image = nil,
+					Actions = { -- Notification Buttons
+						Ignore = {
+							Name = "Close",
+							Callback = function()
+							end
+						},
+					},
+				}) -- noti end
+
+			else
+				_G.UseQability = false
+
+				Rayfield:Notify({ --noti
+					Title = "AutoFarm",
+					Content = "Auto Q Ability Disabled 🤓",
+					Duration = 3.5,
+					Image = nil,
+					Actions = { -- Notification Buttons
+						Ignore = {
+							Name = "Close",
+							Callback = function()
+							end
+						},
+					},
+				}) -- noti end
+
+			end
+
+		end,
+	})
+
+	local Button3 = Tab:CreateButton({
+		Name = "Auto use R Ability",
+		Callback = function()
+			if _G.UseRability == false then
+				_G.UseRability = true
+
+				Rayfield:Notify({ --noti
+					Title = "AutoFarm",
+					Content = "Auto R Ability Enabled 🤓",
+					Duration = 3.5,
+					Image = nil,
+					Actions = { -- Notification Buttons
+						Ignore = {
+							Name = "Close",
+							Callback = function()
+							end
+						},
+					},
+				}) -- noti end
+
+			else
+				_G.UseRability = false
+
+				Rayfield:Notify({ --noti
+					Title = "AutoFarm",
+					Content = "Auto R Ability Disabled 🤓",
+					Duration = 3.5,
+					Image = nil,
+					Actions = { -- Notification Buttons
+						Ignore = {
+							Name = "Close",
+							Callback = function()
+							end
+						},
+					},
+				}) -- noti end
+
+			end
+
+		end,
+	})
+
+
+
+
+end -- End of VoxlBlade
+
+
+Rayfield:LoadConfiguration()
