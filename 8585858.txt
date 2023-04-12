@@ -86,7 +86,7 @@ if game.PlaceId == 11360595370 then
 
 		if bool == true then
 			repeat game:GetService('RunService').RenderStepped:Wait()
-
+                task.wait(0.05)
 				repeat game:GetService('RunService').RenderStepped:Wait() until Player.Character
 				Character = Player.Character
 
@@ -132,7 +132,7 @@ game:GetService("ReplicatedStorage").Events.Quest:InvokeServer(unpack(args))
 						local goal = {}
 
 						goal.CFrame = Mob:WaitForChild('HumanoidRootPart').CFrame * CFrame.new(0,0,7)
-						TweenSpeed = (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude / 4.5
+						TweenSpeed = (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude / 7
 
 						if (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 10 then
 
