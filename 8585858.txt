@@ -161,7 +161,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 	Rayfield:Notify({ --noti
 		Title = "Loaded",
-		Content = "Voxl blade " .. math.random(0,#Emojis),
+		Content = "Voxl blade " .. Emojis[math.random(0,#Emojis)],
 		Duration = 3.5,
 		Image = nil,
 		Actions = { -- Notification Buttons
@@ -184,7 +184,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "Autofarm",
-					Content = "Started Autofarm " .. math.random(0,#Emojis),
+					Content = "Started Autofarm " .. Emojis[math.random(0,#Emojis)],
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -206,7 +206,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "Autofarm",
-					Content = "Stopped Autofarm 🤓",
+					Content = "Stopped Autofarm ".. Emojis[math.random(0,#Emojis)],
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -232,7 +232,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "AutoFarm",
-					Content = "Auto Q Ability Enabled " .. math.random(0,#Emojis),
+					Content = "Auto Q Ability Enabled " .. Emojis[math.random(0,#Emojis)],
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -249,7 +249,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "AutoFarm",
-					Content = "Auto Q Ability Disabled " .. math.random(0,#Emojis),
+					Content = "Auto Q Ability Disabled " .. Emojis[math.random(0,#Emojis)],
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -274,7 +274,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "AutoFarm",
-					Content = "Auto R Ability Enabled " .. math.random(0,#Emojis),
+					Content = "Auto R Ability Enabled " .. Emojis[math.random(0,#Emojis)],
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -291,7 +291,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "AutoFarm",
-					Content = "Auto R Ability Disabled " .. math.random(0,#Emojis),
+					Content = "Auto R Ability Disabled " .. Emojis[math.random(0,#Emojis)],
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -352,7 +352,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 		else
 			Rayfield:Notify({ --noti
 				Title = "Error",
-				Content = Dropdown.CurrentOption[1] .. ' Has not been rendered',
+				Content = Dropdown.CurrentOption[1] .. ' Has not been rendered ' .. Emojis[math.random(0,#Emojis)],
 				Duration = 3.5,
 				Image = nil,
 				Actions = { -- Notification Buttons
