@@ -50,7 +50,7 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-local Tab = Window:CreateTab("Main V.01", nil)
+local Tab = Window:CreateTab("Main V.011", nil)
 
 
 
@@ -97,9 +97,18 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 				Part.Size = Vector3.new(10,1,10)
 
 				if _G.FarmingMobs == true then
-					
+
 
 					if not Mob then
+						for i,v in pairs(NPCS:GetChildren()) do
+							if v:FindFirstChild('LinkedModel') then
+								Mob = v
+								break
+							end
+						end
+					end
+
+					if Mob and not Mob:FindFirstChild('LinkedModel') then
 						for i,v in pairs(NPCS:GetChildren()) do
 							if v:FindFirstChild('LinkedModel') then
 								Mob = v
@@ -114,17 +123,19 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 						local goal = {}
 
 						goal.CFrame = Mob.PrimaryPart.CFrame * CFrame.new(0,0,6)
-						TweenSpeed = (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude / 28
+						TweenSpeed = (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude / 29
 
-						if (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 8 then
+						if (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 9 then
 
 							if _G.UseQability then
 								game:GetService("ReplicatedStorage").Events.WeaponArt:FireServer()
 							end
-							if _G.UseRability then
-								game:GetService("ReplicatedStorage").Events.Rune:FireServer()
-							end
 
+							if Mob and Character and (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 4 then
+								if _G.UseRability then
+									game:GetService("ReplicatedStorage").Events.Rune:FireServer()
+								end
+							end
 							game:GetService("ReplicatedStorage").Events.SwingSword:FireServer("L")
 						end
 
