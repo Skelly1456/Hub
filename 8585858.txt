@@ -338,6 +338,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 	for i,v in pairs(workspace:WaitForChild('Shrines'):GetChildren()) do
 		table.insert(Shrines,v.Name)
+        print(v.Name)
 	end
 
 	workspace:WaitForChild('Shrines').ChildAdded:Connect(function()
