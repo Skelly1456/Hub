@@ -115,10 +115,12 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 								break
 							end
 						end
+						task.wait(0.12)
 					end
 
-					Mob = Mob:FindFirstChild('LinkedModel')
-
+					if Mob then
+						Mob = Mob:FindFirstChild('LinkedModel')
+					end
 					if Mob and Mob.PrimaryPart and Character.PrimaryPart then
 						local goal = {}
 
