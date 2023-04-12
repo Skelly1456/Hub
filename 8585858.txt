@@ -132,10 +132,10 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 					if Mob and Mob:FindFirstChild('LinkedModel') then
 						Mob = Mob:FindFirstChild('LinkedModel')
 					end
-					if Mob and Mob.PrimaryPart and Character.PrimaryPart then
+					if Mob and Mob.PrimaryPart and Character.PrimaryPart and Mob:FindFirstChild('HumanoidRootPart') then
 						local goal = {}
 
-						goal.CFrame = Mob.PrimaryPart.CFrame * CFrame.new(0,0,6)
+						goal.CFrame = Mob:WaitForChild('HumanoidRootPart').CFrame * CFrame.new(0,0,6)
 						TweenSpeed = (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude / 29
 
 						if (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 10 then
