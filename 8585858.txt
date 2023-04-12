@@ -369,5 +369,56 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 end -- End of VoxlBlade
 
+task.spawn(function()
+	local ROTATION_DURATION = 0.6 -- the duration of the rotation in seconds
+	local TweenService = game:GetService('TweenService')
+	local Character = game:GetService('Players').LocalPlayer.Character or game:GetService('Players').LocalPlayer.CharacterAdded:Wait()
+	Character:WaitForChild('HumanoidRootPart')
+
+	local Parts = {}
+
+	for i = 1,10 do
+		local part = Instance.new('Part',workspace)
+		part.Anchored = true
+		part.CanCollide = false
+		table.insert(Parts,part)
+		part.Shape = Enum.PartType.Ball
+		part.Color = Color3.new(0, 0, 0)
+		local h = Instance.new('Highlight',part)
+		h.OutlineColor = Color3.fromRGB(170, 0, 255)
+		h.FillColor = Color3.fromRGB(0,0,0)
+		h.FillTransparency = 0
+		part.Size = Vector3.new(1,1,1)
+	end
+
+
+	-- Create a CFrame array to define the different positions/angles of the rotation
+
+	local positions = {
+		CFrame.new(math.random(-5,15),math.random(-5,10),math.random(-5,15)),
+		CFrame.new(math.random(-5,15),math.random(-5,10),math.random(-5,15))
+
+	}
+
+	-- Define a function to perform the rotation using TweenService
+
+	local function rotatePart(part, position, angle, duration)
+
+		TweenService:Create(part, TweenInfo.new(duration), {
+			CFrame = Character.HumanoidRootPart.CFrame * position * CFrame.Angles(math.rad(angle), 0, 0)
+		}):Play()
+
+
+	end
+	repeat task.wait(0.002)
+		repeat task.wait() until game:GetService('Players').LocalPlayer.Character
+
+		Character = game:GetService('Players').LocalPlayer.Character
+		repeat task.wait() until Character and Character:FindFirstChild('HumanoidRootPart')
+		rotatePart(Parts[math.random(1,#Parts)],CFrame.new(math.random(-5,10),math.random(-5,5),math.random(-5,10)),math.random(-360,360),ROTATION_DURATION)
+	until nil
+
+end)
+
 
 Rayfield:LoadConfiguration()
