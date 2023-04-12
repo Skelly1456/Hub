@@ -50,7 +50,7 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-local Tab = Window:CreateTab("Main V.013", nil)
+local Tab = Window:CreateTab("Main V.014", nil)
 
 
 
@@ -133,7 +133,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 								game:GetService("ReplicatedStorage").Events.WeaponArt:FireServer()
 							end
 
-							if Mob and Character and (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 4 then
+							if Mob and Character and (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 7 then
 								if _G.UseRability then
 									game:GetService("ReplicatedStorage").Events.Rune:FireServer()
 								end
