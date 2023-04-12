@@ -98,6 +98,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 					local Mob = nil
 
 					if not Mob then
+                        task.wait(.1)
 						for i,v in pairs(NPCS:GetChildren()) do
 							if v:FindFirstChild('LinkedModel') then
 								Mob = v
