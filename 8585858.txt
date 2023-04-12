@@ -50,7 +50,7 @@ local Window = Rayfield:CreateWindow({
 	}
 })
 
-local Tab = Window:CreateTab("Main V.017", nil)
+local Tab = Window:CreateTab("Main V.018", nil)
 
 
 
@@ -306,9 +306,23 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 		end,
 	})
 
+	local Shrines = {}
+
+	for i,v in pairs(workspace:WaitForChild('Shrines'):GetChildren()) do
+		table.insert(Shrines,v.Name)
+	end
+
+	workspace:WaitForChild('Shrines').ChildAdded:Connect(function()
+		for i,v in pairs(workspace:WaitForChild('Shrines'):GetChildren()) do
+			if not table.find(Shrines,v.Name) then
+				table.insert(Shrines,v.Name)
+			end
+		end
+	end)
+
 	local Dropdown = Tab:CreateDropdown({
 		Name = "Shrines",
-		Options = {"None"},
+		Options = Shrines,
 		CurrentOption = {"None"},
 		MultipleOptions = false,
 		Flag = "Dropdown1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
@@ -334,26 +348,6 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 			-- The variable (Option) is a table of strings for the current selected options
 		end,
 	})
-	local Shrines = {}
-
-	for i,v in pairs(workspace:WaitForChild('Shrines'):GetChildren()) do
-		table.insert(Shrines,v.Name)
-		Dropdown:Set(v.Name)
-	end
-
-	workspace:WaitForChild('Shrines').ChildAdded:Connect(function()
-		for i,v in pairs(workspace:WaitForChild('Shrines'):GetChildren()) do
-			if not table.find(Shrines,v.Name) then
-				table.insert(Shrines,v.Name)
-			end
-		end
-		Dropdown:Set(Shrines)
-	end)
-
-	Dropdown:Set(Shrines)
-
-
-
 end -- End of VoxlBlade
 
 
