@@ -75,6 +75,8 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 	local Character = Player.Character or Player.CharacterAdded:Wait()
 
 	AutoFarmMobs = function(bool)
+		local Mob = nil
+
 		if bool == true then
 			repeat game:GetService('RunService').RenderStepped:Wait()
 
@@ -95,10 +97,9 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 				Part.Size = Vector3.new(10,1,10)
 
 				if _G.FarmingMobs == true then
-					local Mob = nil
+					
 
 					if not Mob then
-                        task.wait(.1)
 						for i,v in pairs(NPCS:GetChildren()) do
 							if v:FindFirstChild('LinkedModel') then
 								Mob = v
