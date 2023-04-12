@@ -1,5 +1,16 @@
 getgenv().SecureMode = true
---
+
+task.spawn(function()
+	local vu = game:GetService("VirtualUser")
+	game:GetService("Players").LocalPlayer.Idled:connect(function()
+		vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+		task.wait(1)
+		vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
+	end)
+end)
+
+local Emojis = {'😱','😔','😱😱','🧐🧐','😨','😡😡','🤨🤨🤨'}
+
 repeat task.wait() until game.Loaded
 
 --// Universal tables
@@ -26,8 +37,8 @@ local Rayfield = loadstring(game:HttpGet('https://raw.githubusercontent.com/shle
 
 local Window = Rayfield:CreateWindow({
 	Name = "Main",
-	LoadingTitle = "noglatheman",
-	LoadingSubtitle = "by poweringpoweringlol",
+	LoadingTitle = game:GetService('Players').LocalPlayer.Name,
+	LoadingSubtitle = Emojis[math.random(1,#Emojis)],
 	ConfigurationSaving = {
 		Enabled = true,
 		FolderName = nil, -- Create a custom folder for your hub/game
@@ -40,21 +51,21 @@ local Window = Rayfield:CreateWindow({
 	},
 	KeySystem = true, -- Set this to true to use our key system
 	KeySettings = {
-		Title = "noglatheman",
+		Title = game:GetService('Players').LocalPlayer.Name,
 		Subtitle = "Key System",
 		Note = "cryope",
-		FileName = "noglatheman key",
-		SaveKey = false,
+		FileName = "Key",
+		SaveKey = true,
 		GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
 		Key = "noglatheman"
 	}
 })
 
-local Tab = Window:CreateTab("Main", nil)
+local Tab = Window:CreateTab("Main V.018", nil)
 
 
 
-if game.PlaceId == 8651781069 then -- VoxlBlade
+if game.PlaceId == 8651781069 or game.PlaceId == 9351498692 then -- VoxlBlade
 
 	--// Bool Values
 	_G.FarmingMobs = false
@@ -75,6 +86,8 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 	local Character = Player.Character or Player.CharacterAdded:Wait()
 
 	AutoFarmMobs = function(bool)
+		local Mob = nil
+
 		if bool == true then
 			repeat game:GetService('RunService').RenderStepped:Wait()
 
@@ -95,7 +108,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 				Part.Size = Vector3.new(10,1,10)
 
 				if _G.FarmingMobs == true then
-					local Mob = nil
+
 
 					if not Mob then
 						for i,v in pairs(NPCS:GetChildren()) do
@@ -106,23 +119,36 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 						end
 					end
 
-					Mob = Mob:FindFirstChild('LinkedModel')
+					if Mob and not Mob:FindFirstChild('HumanoidRootPart') then
+						for i,v in pairs(NPCS:GetChildren()) do
+							if v:FindFirstChild('LinkedModel') then
+								Mob = v
+								break
+							end
+						end
+						task.wait(0.12)
+					end
 
-					if Mob and Mob.PrimaryPart and Character.PrimaryPart then
+					if Mob and Mob:FindFirstChild('LinkedModel') then
+						Mob = Mob:FindFirstChild('LinkedModel')
+					end
+					if Mob and Mob.PrimaryPart and Character.PrimaryPart and Mob:FindFirstChild('HumanoidRootPart') then
 						local goal = {}
 
-						goal.CFrame = Mob.PrimaryPart.CFrame * CFrame.new(0,0,6)
-						TweenSpeed = (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude / 28
+						goal.CFrame = Mob:WaitForChild('HumanoidRootPart').CFrame * CFrame.new(0,0,6)
+						TweenSpeed = (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude / 29
 
-						if (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 8 then
+						if (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 10 then
 
-							if _G.UseQability then
+							if Mob and Character and (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 8 and _G.UseQability then
 								game:GetService("ReplicatedStorage").Events.WeaponArt:FireServer()
 							end
-							if _G.UseRability then
-								game:GetService("ReplicatedStorage").Events.Rune:FireServer()
-							end
 
+							if Mob and Character and (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 7 then
+								if _G.UseRability then
+									game:GetService("ReplicatedStorage").Events.Rune:FireServer()
+								end
+							end
 							game:GetService("ReplicatedStorage").Events.SwingSword:FireServer("L")
 						end
 
@@ -144,7 +170,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 	Rayfield:Notify({ --noti
 		Title = "Loaded",
-		Content = "Voxl blade",
+		Content = "Voxl blade " .. Emojis[math.random(1,#Emojis)],
 		Duration = 3.5,
 		Image = nil,
 		Actions = { -- Notification Buttons
@@ -167,7 +193,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "Autofarm",
-					Content = "Started Autofarm 🤓",
+					Content = "Started Autofarm " .. Emojis[math.random(1,#Emojis)],
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -189,7 +215,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "Autofarm",
-					Content = "Stopped Autofarm 🤓",
+					Content = "Stopped Autofarm ".. Emojis[math.random(1,#Emojis)],
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -215,7 +241,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "AutoFarm",
-					Content = "Auto Q Ability Enabled 🤓",
+					Content = "Auto Q Ability Enabled " .. Emojis[math.random(1,#Emojis)],
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -232,7 +258,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "AutoFarm",
-					Content = "Auto Q Ability Disabled 🤓",
+					Content = "Auto Q Ability Disabled " .. Emojis[math.random(1,#Emojis)],
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -257,7 +283,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "AutoFarm",
-					Content = "Auto R Ability Enabled 🤓",
+					Content = "Auto R Ability Enabled " .. Emojis[math.random(1,#Emojis)],
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -274,7 +300,7 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 
 				Rayfield:Notify({ --noti
 					Title = "AutoFarm",
-					Content = "Auto R Ability Disabled 🤓",
+					Content = "Auto R Ability Disabled " .. Emojis[math.random(1,#Emojis)],
 					Duration = 3.5,
 					Image = nil,
 					Actions = { -- Notification Buttons
@@ -291,10 +317,123 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 		end,
 	})
 
+        if game.PlaceId ~= 9351498692 then
+	local Shrines = {}
+
+	for i,v in pairs(workspace:WaitForChild('Shrines'):GetChildren()) do
+		table.insert(Shrines,v.Name)
+	end
+
+	workspace:WaitForChild('Shrines').ChildAdded:Connect(function()
+		for i,v in pairs(workspace:WaitForChild('Shrines'):GetChildren()) do
+			if not table.find(Shrines,v.Name) then
+				table.insert(Shrines,v.Name)
+			end
+		end
+	end)
 
 
+
+	local Dropdown = Tab:CreateDropdown({
+		Name = "Shrines",
+		Options = Shrines,
+		CurrentOption = {"None"},
+		MultipleOptions = false,
+		Flag = "Dropdown1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+		Callback = function(Option)
+
+			Doit()
+			-- The function that takes place when the selected option is changed
+			-- The variable (Option) is a table of strings for the current selected options
+		end,
+	})
+	local Fix = true
+
+	Doit = function()
+		local LastOption = Dropdown.CurrentOption[1]
+		if Fix == true then task.delay(1,function() Fix = false end) return end
+		if Fix == false then
+			if  workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]) then
+				Noclip(Character)
+				TweenService:Create(Character.PrimaryPart, TweenInfo.new( (Character.PrimaryPart.Position - workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.Position).Magnitude / 29), {CFrame = workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.CFrame}):Play()
+				repeat task.wait()
+					if Character:FindFirstChild('Torso') then
+						if Character.Torso.CanCollide == true then Noclip(Character) end
+						Part.CFrame = Character.PrimaryPart.CFrame * CFrame.new(0,-2.5,0)
+					end
+				until (Character.PrimaryPart.Position - workspace:WaitForChild('Shrines'):FindFirstChild(Dropdown.CurrentOption[1]).PrimaryPart.Position).Magnitude <= 4 or _G.FarmingMobs == true or Dropdown.CurrentOption[1] ~= LastOption
+			else
+				Rayfield:Notify({ --noti
+					Title = "Error",
+					Content = Dropdown.CurrentOption[1] .. ' Has not been rendered ' .. Emojis[math.random(0,#Emojis)],
+					Duration = 3.5,
+					Image = nil,
+					Actions = { -- Notification Buttons
+						Ignore = {
+							Name = "Close",
+							Callback = function()
+							end
+						},
+					},
+				}) -- noti end
+			end
+		end
+	end
+end
 
 end -- End of VoxlBlade
 
+if game.PlaceId ~= 9351498692 then
+task.spawn(function()
+	local ROTATION_DURATION = 0.6 -- the duration of the rotation in seconds
+	local TweenService = game:GetService('TweenService')
+	local Character = game:GetService('Players').LocalPlayer.Character or game:GetService('Players').LocalPlayer.CharacterAdded:Wait()
+	Character:WaitForChild('HumanoidRootPart')
+
+	local Parts = {}
+
+	for i = 1,10 do
+		local part = Instance.new('Part',workspace)
+		part.Anchored = true
+		part.CanCollide = false
+		table.insert(Parts,part)
+		part.Shape = Enum.PartType.Ball
+		part.Color = Color3.new(0, 0, 0)
+		local h = Instance.new('Highlight',part)
+		h.OutlineColor = Color3.fromRGB(170, 0, 255)
+		h.FillColor = Color3.fromRGB(0,0,0)
+		h.FillTransparency = 0
+		part.Size = Vector3.new(1,1,1)
+	end
+
+
+	-- Create a CFrame array to define the different positions/angles of the rotation
+
+	local positions = {
+		CFrame.new(math.random(-5,15),math.random(-5,10),math.random(-5,15)),
+		CFrame.new(math.random(-5,15),math.random(-5,10),math.random(-5,15))
+
+	}
+
+	-- Define a function to perform the rotation using TweenService
+
+	local function rotatePart(part, position, angle, duration)
+
+		TweenService:Create(part, TweenInfo.new(duration), {
+			CFrame = Character.HumanoidRootPart.CFrame * position * CFrame.Angles(math.rad(angle), 0, 0)
+		}):Play()
+
+
+	end
+	repeat task.wait(0.002)
+		repeat task.wait() until game:GetService('Players').LocalPlayer.Character
+
+		Character = game:GetService('Players').LocalPlayer.Character
+		repeat task.wait() until Character and Character:FindFirstChild('HumanoidRootPart')
+		rotatePart(Parts[math.random(1,#Parts)],CFrame.new(math.random(-5,10),math.random(-5,5),math.random(-5,10)),math.random(-360,360),ROTATION_DURATION)
+	until nil
+
+end)
+end
 
 Rayfield:LoadConfiguration()
