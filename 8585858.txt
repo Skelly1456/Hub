@@ -43,11 +43,11 @@ local Window = Rayfield:CreateWindow({
 	},
 	KeySystem = true, -- Set this to true to use our key system
 	KeySettings = {
-		Title = "noglatheman",
+		Title = game:GetService('Players').LocalPlayer.Name,
 		Subtitle = "Key System",
 		Note = "cryope",
-		FileName = "noglatheman key",
-		SaveKey = false,
+		FileName = "Key",
+		SaveKey = true,
 		GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
 		Key = "noglatheman"
 	}
