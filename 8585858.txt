@@ -125,9 +125,9 @@ if game.PlaceId == 8651781069 then -- VoxlBlade
 						goal.CFrame = Mob.PrimaryPart.CFrame * CFrame.new(0,0,6)
 						TweenSpeed = (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude / 29
 
-						if (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 9 then
+						if (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 10 then
 
-							if _G.UseQability then
+							if Mob and Character and (Character.PrimaryPart.Position - Mob.PrimaryPart.Position).Magnitude <= 8 and _G.UseQability then
 								game:GetService("ReplicatedStorage").Events.WeaponArt:FireServer()
 							end
 
