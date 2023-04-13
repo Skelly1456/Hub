@@ -487,7 +487,7 @@ if game.PlaceId == 8651781069 or game.PlaceId == 9351498692 then -- VoxlBlade
 
 	local Input = Tab:CreateInput({
 		Name = "Specific Mob",
-		PlaceholderText = "Type a mobs name Example: Bumblz (Leave blank if none)",
+		PlaceholderText = "Type a mobs name(Leave blank if none)",
 		RemoveTextAfterFocusLost = false,
 		Callback = function(Text)
 			if Text == "" then
