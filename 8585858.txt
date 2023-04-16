@@ -1,13 +1,13 @@
-getgenv().SecureMode = true
+--getgenv().SecureMode = true
 
-task.spawn(function()
+--[[task.spawn(function()
 	local vu = game:GetService("VirtualUser")
 	game:GetService("Players").LocalPlayer.Idled:connect(function()
 		vu:Button2Down(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 		task.wait(1)
 		vu:Button2Up(Vector2.new(0,0),workspace.CurrentCamera.CFrame)
 	end)
-end)
+end)]]
 
 local Emojis = {'😱','😔','😱😱','🧐🧐','😨','😡😡','🤨🤨🤨'}
 
@@ -62,6 +62,87 @@ local Window = Rayfield:CreateWindow({
 })
 
 local Tab = Window:CreateTab("Main V 1.45", nil)
+
+if game.PlaceId == 13038830668 then
+    
+   
+
+local Input = Tab:CreateInput({
+		Name = "Village",
+		PlaceholderText = "Type your village name (Case sensitive)",
+		RemoveTextAfterFocusLost = false,
+		Callback = function(Text)
+			if Text == "" then
+				
+				_G.Village = ''
+			else
+				
+				_G.Village = Text
+			end
+		end,
+	})
+    
+_G.Autofarm = false
+_G.Village = ""
+
+
+
+local Player = game:GetService('Players').LocalPlayer
+local Char = Player.Character
+_G.Stop = false
+
+
+
+
+	
+
+
+--[[game:GetService('Players').PlayerAdded:Connect(function(plr)
+	if plr:GetRankInGroup(17256538) > 1 then
+		plr:Kick('An admin by the name of '.. plr.Name .. 'Has Joined the server 😨')
+	end
+end)]]
+
+repeat game:GetService('RunService').PreRender:Wait()
+    if Char and Char:FindFirstChild('Input') and Char:FindFirstChild('Input'):FindFirstChild('Fall') then Char:FindFirstChild('Input'):FindFirstChild('Fall'):Destroy() end 
+    print(_G.Village)
+    if _G.Village ~= '' and workspace.Missions.Water:FindFirstChild(_G.Village) then
+       print('yes')
+        
+local Plants = workspace.Missions.Water[_G.Village].Plants
+local Trash = workspace.Missions.Litter[_G.Village].Litter
+
+	if not Player.PlayerGui:FindFirstChild('Countdown') --[[ or Player.PlayerGui:FindFirstChild('MissionText') and Player.PlayerGui:FindFirstChild('MissionText').TextLabel.Text == 'Mission completed.']] and _G.Village ~= '' then
+	    print('Loading...')
+		Char.HumanoidRootPart.CFrame = workspace.MissionBoard[_G.Village].F.Click.CFrame * CFrame.new(0,0,3)
+		fireclickdetector(workspace.MissionBoard[_G.Village].F.Click.ClickDetector)
+	end
+
+	for i,v in pairs(Trash:GetChildren()) do
+		if v and v:FindFirstChild('Target') then
+			if Player.Backpack:FindFirstChild('Broom') then
+				Char.Humanoid:EquipTool(Player.Backpack:FindFirstChild('Broom'))
+			end
+			task.wait(.1)
+			Char.HumanoidRootPart.CFrame = v.CFrame
+		end
+	end
+
+	for i,v in pairs(Plants:GetChildren()) do
+		if v and v:FindFirstChild('Target') then
+			if Player.Backpack:FindFirstChild('Watering Can') then
+				Char.Humanoid:EquipTool(Player.Backpack:FindFirstChild('Watering Can'))
+			end
+			task.wait(.1)
+			Char.HumanoidRootPart.CFrame = v.CFrame
+		end
+	end
+	end
+
+until _G.Stop == true
+
+end
+
 
 if game.PlaceId == 11360595370 then -- Unordinary
 
