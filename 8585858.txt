@@ -63,7 +63,7 @@ local Window = Rayfield:CreateWindow({
 
 local Tab = Window:CreateTab("Main V 1.45", nil)
 
-if game.PlaceId == 13038830668 then
+if game.PlaceId == 13038830668 or game.PlaceId == 9553119328 then -- Naruto Copies
     
    
 
