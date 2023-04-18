@@ -96,12 +96,13 @@ _G.Stop = false
 
 	
 
-
---[[game:GetService('Players').PlayerAdded:Connect(function(plr)
-	if plr:GetRankInGroup(17256538) > 1 then
+task.spawn(function()
+game:GetService('Players').PlayerAdded:Connect(function(plr)
+	if plr:GetRankInGroup(14678787) > 1 then
 		plr:Kick('An admin by the name of '.. plr.Name .. 'Has Joined the server 😨')
 	end
-end)]]
+end)
+end)
 
 repeat game:GetService('RunService').PreRender:Wait()
     if Char and Char:FindFirstChild('Input') and Char:FindFirstChild('Input'):FindFirstChild('Fall') then Char:FindFirstChild('Input'):FindFirstChild('Fall'):Destroy() end 
@@ -114,8 +115,20 @@ local Trash = workspace.Missions.Litter[_G.Village].Litter
 
 	if not Player.PlayerGui:FindFirstChild('Countdown') --[[ or Player.PlayerGui:FindFirstChild('MissionText') and Player.PlayerGui:FindFirstChild('MissionText').TextLabel.Text == 'Mission completed.']] and _G.Village ~= '' then
 	    print('Loading...')
-		Char.HumanoidRootPart.CFrame = workspace.MissionBoard[_G.Village].F.Click.CFrame * CFrame.new(0,0,3)
-		fireclickdetector(workspace.MissionBoard[_G.Village].F.Click.ClickDetector)
+		Char.HumanoidRootPart.CFrame = workspace.Boards[_G.Village]['Academy Students'].Click.CFrame * CFrame.new(0,0,3)
+		task.spawn(function()
+		 for i, v in pairs(game:GetService("Workspace"):GetDescendants()) do
+           if v:IsA("Part") or v:IsA("MeshPart") then
+               if game:GetService("Players").LocalPlayer:DistanceFromCharacter(v.Position) <= 5 then
+                   if v:FindFirstChild("ProximityPrompt") then
+                       fireproximityprompt(v.ProximityPrompt)
+                       break
+                   end
+               end
+            end
+		 end
+       end)
+	--	fireclickdetector(workspace.Boards[_G.Village].F.Click.ClickDetector)
 	end
 
 	for i,v in pairs(Trash:GetChildren()) do
